@@ -28,11 +28,19 @@ func (mi *mapIterator[TKey, TValue]) Next() types.Option[types.Tuple2[TKey, TVal
 		}
 		mi.keys = FromSlice(keys)
 	}
-	switch next := mi.keys.Next().(type) {
-	case types.Some[TKey]:
-		k := next.Value()
-		return option.Some(tuple.New2(k, mi.m[k]))
-	default:
-		return option.None[types.Tuple2[TKey, TValue]]()
+
+	none := option.None[types.Tuple2[TKey, TValue]]()
+	for {
+		switch next := mi.keys.Next().(type) {
+		case types.Some[TKey]:
+			k := next.Value()
+			v, ok := mi.m[k]
+			if !ok {
+				continue
+			}
+			return option.Some(tuple.New2(k, v))
+		case types.None[TKey]:
+			return none
+		}
 	}
 }

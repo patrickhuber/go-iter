@@ -100,3 +100,7 @@ iter.ForEachIndex(it, func(index int, tup types.Tuple2[string, int]){
 fmt.Print(" ]")
 // prints : [ '0':0, '1':1, '2':2, '3':3 ]
 ```
+
+# Count 
+
+The [Count](count.go) function returns the count of element in the iterator by iterating over all the elements. 
