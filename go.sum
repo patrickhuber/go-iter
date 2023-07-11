@@ -1,0 +1,4 @@
+github.com/patrickhuber/go-types v0.2.5 h1:YQwKuqTpLKpD53YNbtmAS9rJfYcmpdMhd1H2E4n6CjY=
+github.com/patrickhuber/go-types v0.2.5/go.mod h1:fkCDj9+Mfd2t7x0vb8EQywoa1vhBp+G8AW7M5kz7rnc=
+golang.org/x/exp v0.0.0-20230711023510-fffb14384f22 h1:FqrVOBQxQ8r/UwwXibI0KMolVhvFiGobSfdE33deHJM=
+golang.org/x/exp v0.0.0-20230711023510-fffb14384f22/go.mod h1:FXUEEKJgO7OQYeo8N01OfiKP8RXMtf6e8aTskBGqWdc=
