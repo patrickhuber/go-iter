@@ -22,7 +22,8 @@ type mapIterator[TKey comparable, TValue any] struct {
 func (mi *mapIterator[TKey, TValue]) Next() types.Option[types.Tuple2[TKey, TValue]] {
 	// first iteration, provide the list of keys
 	if mi.keys == nil {
-		var keys []TKey
+		// size to the map but set len to zero
+		keys := make([]TKey, 0, len(mi.m))
 		for k := range mi.m {
 			keys = append(keys, k)
 		}
