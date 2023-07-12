@@ -22,6 +22,19 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // 0 1 2 3 4 5 6 7 8 9
 ```
 
+# Repeat
+
+```golang
+rep := iter.Repeat(10, 5)
+iter.ForEachIndex(rng, func(index int, i int) {
+    if index > 0 {
+        fmt.Print(" ")
+    }
+    fmt.Print(i)
+})
+// prints:
+// 10 10 10 10 10
+```
 # Select
 
 The [Select](select.go) function transforms an iterator of one type to an iterator of another type. 
