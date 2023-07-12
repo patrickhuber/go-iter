@@ -104,3 +104,30 @@ fmt.Print(" ]")
 # Count 
 
 The [Count](count.go) function returns the count of element in the iterator by iterating over all the elements. 
+
+```golang
+expected := 10
+rng := iter.Range(0, expected)
+actual := iter.Count(rng)
+if actual != expected {
+    t.Fatalf("expected count of %d but found %d", expected, actual)
+}
+```
+
+# FromChannel
+
+The [FromChannel](channel.go) function returns an iterator over the given channel. A context can be specified in options for early termination.
+
+```golang
+ch := make(chan int)
+go func(c chan int) {
+    defer close(c)
+    for i := 0; i < 10; i++ {
+        ch <- i
+    }
+}(ch)
+it := iter.FromChannel(ch)
+iter.ForEach(it, func(i int) {
+    fmt.Println(i)
+})
+```
