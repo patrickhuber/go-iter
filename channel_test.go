@@ -26,13 +26,18 @@ func TestChannel(t *testing.T) {
 
 	t.Run("cancel", func(t *testing.T) {
 		ch := make(chan int)
-		go func(c chan int) {
+		cx, cancel := context.WithCancel(context.Background())
+		go func(c chan int, cx context.Context) {
 			defer close(c)
 			for i := 0; i < 10; i++ {
-				ch <- i
+				select {
+				case ch <- i:
+				case <-cx.Done():
+					return
+				}
 			}
-		}(ch)
-		cx, cancel := context.WithCancel(context.Background())
+		}(ch, cx)
+
 		cancel()
 		it := iter.FromChannel(ch, iter.WithContext[int](cx))
 		iter.ForEach(it, func(i int) {

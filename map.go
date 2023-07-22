@@ -1,10 +1,29 @@
 package iter
 
 import (
+	"context"
+
 	"github.com/patrickhuber/go-types"
 	"github.com/patrickhuber/go-types/option"
 	"github.com/patrickhuber/go-types/tuple"
 )
+
+// FromMapAsync returns a call to FromChannel with a channel created by iterating over the map in a go routine
+// The context passed in is used to pass the WithContext chanel option to the FromChannel call
+func FromMapAsync[TKey comparable, TValue any](m map[TKey]TValue, cx context.Context) Iterator[types.Tuple2[TKey, TValue]] {
+	ch := make(chan types.Tuple2[TKey, TValue])
+	go func(ch chan types.Tuple2[TKey, TValue], cx context.Context) {
+		defer close(ch)
+		for k, v := range m {
+			select {
+			case ch <- tuple.New2(k, v):
+			case <-cx.Done():
+				return
+			}
+		}
+	}(ch, cx)
+	return FromChannel(ch, WithContext[types.Tuple2[TKey, TValue]](cx))
+}
 
 func FromMap[TKey comparable, TValue any](m map[TKey]TValue) Iterator[types.Tuple2[TKey, TValue]] {
 	return &mapIterator[TKey, TValue]{
