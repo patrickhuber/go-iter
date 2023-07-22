@@ -18,10 +18,12 @@ func WithContext[T any](cx context.Context) ChannelOption[T] {
 func FromChannel[T any](ch chan T, options ...ChannelOption[T]) Iterator[T] {
 	ci := &channelIterator[T]{
 		ch: ch,
-		cx: context.Background(),
 	}
 	for _, option := range options {
 		option(ci)
+	}
+	if ci.cx == nil {
+		ci.cx = context.Background()
 	}
 	return ci
 }
