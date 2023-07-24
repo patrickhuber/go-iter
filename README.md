@@ -10,7 +10,7 @@ This package has a dependency on [go-types](https://github.com/patrickhuber/go-t
 
 Here are three ways to loop over an iterator
 
-## For Loop 
+## [For Loop](for_test.go)
 
 A for loop has init, condition and post sections that can be used on an iterator.
 
@@ -21,7 +21,7 @@ for op := rng.Next(); op.IsSome(); op = rng.Next() {
 }
 ```
 
-## Async (calling range on a channel)
+## [Async](async.go) (calling range on a channel)
 
 You can also loop over a channel created from an Iterator[T] using the iter.Async function. This requires a context as a go routine is used.
 
@@ -43,7 +43,7 @@ for i, op := range iter.Async(rng, cx){
 }
 ```
 
-## ForEach
+## [ForEach](for_each.go)
 
 ForEach uses an anonymous function to iterate over each item to the caller.
 
@@ -57,7 +57,7 @@ iter.ForEach(rng, func(i int) {
 //  0 1 2 3 4 5 6 7 8 9
 ```
 
-## ForEachIndex
+## [ForEachIndex](for_each.go)
 
 ForEachIndex uses an anonymous function to iterate over each item and the index of that item to the caller.
 
@@ -73,9 +73,9 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // 0 1 2 3 4 5 6 7 8 9
 ```
 
-# Range
+# [Range](range.go)
 
-The [Range](range.go) function creates an iterator over `[begin..end)` (inclusive begin, exclusive end)
+The Range function creates an iterator over `[begin..end)` (inclusive begin, exclusive end)
 
 ```golang
 rng := iter.Range(0, 10)
@@ -89,7 +89,9 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // 0 1 2 3 4 5 6 7 8 9
 ```
 
-# Repeat
+# [Repeat](repeat.go)
+
+Repeat returns an iterator that repeats the given `element`, `count` times
 
 ```golang
 rep := iter.Repeat(10, 5)
@@ -103,9 +105,9 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // 10 10 10 10 10
 ```
 
-# Select
+# [Select](select.go)
 
-The [Select](select.go) function transforms an iterator of one type to an iterator of another type. 
+The Select function transforms an iterator of one type to an iterator of another type. 
 
 ```golang
 rng := iter.Range(0,10)
@@ -119,9 +121,9 @@ iter.ForEachIndex(strRng, func(index int, s string){
 // prints : '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
 ```
 
-# Where
+# [Where](where.go)
 
-The [Where](where.go) function removes items from an iterator using a predicate function.
+The Where function removes items from an iterator using a predicate function.
 
 ```golang
 rng := iter.Range(0,10)
@@ -136,9 +138,9 @@ iter.ForEachIndex(evens, func(index int, i int){
 // prints : 0 2 4 6 8
 ```
 
-# FromSlice
+# [FromSlice](slice.go)
 
-The [FromSlice](slice.go) function returns a slice iterator over the given slice
+The FromSlice function returns a slice iterator over the given slice
 
 ```golang
 slice := []int{1, 3, 5, 7, 9}
@@ -152,9 +154,9 @@ iter.ForEachIndex(it, func(index int, i int){
 // prints 1 3 5 7 9
 ```
 
-# ToSlice
+# [ToSlice](slice.go) 
 
-The [ToSlice](slice.go) function returns a slice from the given iterator by iterating over all elements.
+The ToSlice function returns a slice from the given iterator by iterating over all elements.
 
 ```golang
 rng := iter.Range(0, 10)
@@ -163,9 +165,9 @@ fmt.Println(slice)
 // prints : [0 1 2 3 4 5 6 7 8 9]
 ```
 
-# FromMap
+# [FromMap](map.go) 
 
-The [FromMap](map.go) function returns an iterator over the given map. FromMap captures keys of the map in the first call to `Next()`. Subsequent calls to `Next()` track an index into the key slice to return the next key value pair. Each call to `Next()` returns an Option tuple of Key Value pairs.
+The FromMap function returns an iterator over the given map. FromMap captures keys of the map in the first call to `Next()`. Subsequent calls to `Next()` track an index into the key slice to return the next key value pair. Each call to `Next()` returns an Option tuple of Key Value pairs.
 
 ```golang
 m := map[string]int{"0":0, "1":1, "2":2, "3":3}
@@ -182,9 +184,9 @@ fmt.Print(" ]")
 // prints : [ '0':0, '1':1, '2':2, '3':3 ]
 ```
 
-# FromMapAsync
+# [FromMapAsync](map.go)
 
-The [FromMapAsync](map.go) function returns an iterator over the given map using channels and the supplied context. FromMapAsync uses a go routine to iterate over the map and channels to capture the key value pair. The `Next()` function removes a tuple key, value from the channel.
+The FromMapAsync function returns an iterator over the given map using channels and the supplied context. FromMapAsync uses a go routine to iterate over the map and channels to capture the key value pair. The `Next()` function removes a tuple key, value from the channel.
 
 ```golang
 m := map[string]int{"0":0, "1":1, "2":2, "3":3}
@@ -202,9 +204,9 @@ fmt.Print(" ]")
 ```
 
 
-# Count 
+# [Count](count.go) 
 
-The [Count](count.go) function returns the count of element in the iterator by iterating over all the elements. 
+The Count function returns the count of element in the iterator by iterating over all the elements. 
 
 ```golang
 expected := 10
@@ -215,9 +217,9 @@ if actual != expected {
 }
 ```
 
-# FromChannel
+# [FromChannel](channel.go)
 
-The [FromChannel](channel.go) function returns an iterator over the given channel. A context can be specified in options for early termination.
+The FromChannel function returns an iterator over the given channel. A context can be specified in options for early termination.
 
 ```golang
 ch := make(chan int)
