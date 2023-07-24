@@ -1,7 +1,6 @@
 package iter_test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/patrickhuber/go-iter"
@@ -10,9 +9,8 @@ import (
 func TestAsync(t *testing.T) {
 	max := 10
 	rng := iter.Range(0, max)
-	cx := context.Background()
 	sum := 0
-	for o := range iter.Async(rng, cx) {
+	for o := range iter.Async(rng) {
 		sum += o
 	}
 	if sum != 45 {

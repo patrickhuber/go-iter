@@ -23,12 +23,11 @@ for op := rng.Next(); op.IsSome(); op = rng.Next() {
 
 ## [Async](async.go) (calling range on a channel)
 
-You can also loop over a channel created from an Iterator[T] using the iter.Async function. This requires a context as a go routine is used.
+You can also loop over a channel created from an Iterator[T] using the iter.Async function. You can specify a context with the iter.WithContext[T] option. If no context is specified, context.Background() is used.
 
 ```golang
 rng := iter.Range(0, 10)
-cx := context.Background()
-for op := range iter.Async(rng, cx) {
+for value := range iter.Async(rng) {
     // code in here
 }
 ```
@@ -37,9 +36,18 @@ You can also get an index
 
 ```golang
 rng := iter.Range(0, 10)
-cx := context.Background()
-for i, op := range iter.Async(rng, cx){
+for i, value := range iter.Async(rng){
     // code in here
+}
+```
+
+Specify a context
+
+```golang
+rng := iter.Range(0,10)
+op := iter.WithContext[int](context.TODO())
+for value := range iter.Async(rng, op){
+    // code here
 }
 ```
 

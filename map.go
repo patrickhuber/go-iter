@@ -25,6 +25,10 @@ func FromMapAsync[TKey comparable, TValue any](m map[TKey]TValue, cx context.Con
 	return FromChannel(ch, WithContext[types.Tuple2[TKey, TValue]](cx))
 }
 
+// FromMap returns an iterator over the given map.
+// FromMap captures keys of the map in the first call to `Next()`.
+// Subsequent calls to `Next()` track an index into the key slice to return the next key value pair.
+// Each call to `Next()` returns an Option tuple of Key Value pairs.
 func FromMap[TKey comparable, TValue any](m map[TKey]TValue) Iterator[types.Tuple2[TKey, TValue]] {
 	return &mapIterator[TKey, TValue]{
 		m: m,

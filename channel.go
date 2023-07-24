@@ -7,25 +7,31 @@ import (
 	"github.com/patrickhuber/go-types/option"
 )
 
-type ChannelOption[T any] func(*channelIterator[T])
+type ChannelOption[T any] func(*channelOption[T])
 
+type channelOption[T any] struct {
+	cx context.Context
+}
+
+// WithContext provides an context.Context for channel operations
 func WithContext[T any](cx context.Context) ChannelOption[T] {
-	return func(ci *channelIterator[T]) {
+	return func(ci *channelOption[T]) {
 		ci.cx = cx
 	}
 }
 
 func FromChannel[T any](ch chan T, options ...ChannelOption[T]) Iterator[T] {
-	ci := &channelIterator[T]{
-		ch: ch,
-	}
+	co := &channelOption[T]{}
 	for _, option := range options {
-		option(ci)
+		option(co)
 	}
-	if ci.cx == nil {
-		ci.cx = context.Background()
+	if co.cx == nil {
+		co.cx = context.Background()
 	}
-	return ci
+	return &channelIterator[T]{
+		ch: ch,
+		cx: co.cx,
+	}
 }
 
 type channelIterator[T any] struct {
