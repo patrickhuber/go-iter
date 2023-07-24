@@ -6,6 +6,15 @@ Iterators defer iteration execution by pushing iteration logic into the Next() f
 
 This package has a dependency on [go-types](https://github.com/patrickhuber/go-types) for the Option[T any] type. Users of the iter module can utilize Result[T] to capture errors or perform transformations on slices that can contain errors. 
 
+You can loop over an iterator using the following syntax or ForEach and ForEachIterator (see below):
+
+```golang
+rng := iter.Range(0, max)
+for op := rng.Next(); op.IsSome(); op = rng.Next() {
+    // code in here
+}
+```
+
 # Range
 
 The [Range](range.go) function creates an iterator over `[begin..end)` (inclusive begin, exclusive end)
