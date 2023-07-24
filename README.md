@@ -32,15 +32,6 @@ for value := range iter.Async(rng) {
 }
 ```
 
-You can also get an index 
-
-```golang
-rng := iter.Range(0, 10)
-for i, value := range iter.Async(rng){
-    // code in here
-}
-```
-
 Specify a context
 
 ```golang
