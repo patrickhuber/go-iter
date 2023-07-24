@@ -6,13 +6,71 @@ Iterators defer iteration execution by pushing iteration logic into the Next() f
 
 This package has a dependency on [go-types](https://github.com/patrickhuber/go-types) for the Option[T any] type. Users of the iter module can utilize Result[T] to capture errors or perform transformations on slices that can contain errors. 
 
-You can loop over an iterator using the following syntax or ForEach and ForEachIterator (see below):
+# Looping
+
+Here are three ways to loop over an iterator
+
+## For Loop 
+
+A for loop has init, condition and post sections that can be used on an iterator.
 
 ```golang
-rng := iter.Range(0, max)
+rng := iter.Range(0, 10)
 for op := rng.Next(); op.IsSome(); op = rng.Next() {
     // code in here
 }
+```
+
+## Async (calling range on a channel)
+
+You can also loop over a channel created from an Iterator[T] using the iter.Async function. This requires a context as a go routine is used.
+
+```golang
+rng := iter.Range(0, 10)
+cx := context.Background()
+for op := range iter.Async(rng, cx) {
+    // code in here
+}
+```
+
+You can also get an index 
+
+```golang
+rng := iter.Range(0, 10)
+cx := context.Background()
+for i, op := range iter.Async(rng, cx){
+    // code in here
+}
+```
+
+## ForEach
+
+ForEach uses an anonymous function to iterate over each item to the caller.
+
+```golang
+rng := iter.Range(0, 10)
+iter.ForEach(rng, func(i int) {
+    fmt.Print(" ")
+    fmt.Print(i)
+})
+// prints:
+//  0 1 2 3 4 5 6 7 8 9
+```
+
+## ForEachIndex
+
+ForEachIndex uses an anonymous function to iterate over each item and the index of that item to the caller.
+
+```golang
+rng := iter.Range(0, 10)
+iter.ForEachIndex(rng, func(index int, i int) {
+    if index > 0 {
+        fmt.Print(" ")
+    }
+    fmt.Print(i)
+})
+// prints:
+// 0 1 2 3 4 5 6 7 8 9
 ```
 
 # Range
@@ -71,7 +129,7 @@ even := func(i int){ return i % 2 }
 evens := iter.Where(rng, even)
 iter.ForEachIndex(evens, func(index int, i int){
     if index > 0{
-        fmt.Prin(" ")
+        fmt.Print(" ")
     }
     fmt.Print("%d", i)
 })
@@ -87,7 +145,7 @@ slice := []int{1, 3, 5, 7, 9}
 it := iter.FromSlice(slice)
 iter.ForEachIndex(it, func(index int, i int){
     if index > 0{
-        fmt.Prin(" ")
+        fmt.Print(" ")
     }
     fmt.Print("%d", i)
 })
