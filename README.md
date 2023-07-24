@@ -44,6 +44,7 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // prints:
 // 10 10 10 10 10
 ```
+
 # Select
 
 The [Select](select.go) function transforms an iterator of one type to an iterator of another type. 
@@ -122,6 +123,26 @@ iter.ForEachIndex(it, func(index int, tup types.Tuple2[string, int]){
 fmt.Print(" ]")
 // prints : [ '0':0, '1':1, '2':2, '3':3 ]
 ```
+
+# FromMapAsync
+
+The [FromMapAsync](map.go) function returns an iterator over the given map using channels and the supplied context. FromMapAsync uses a go routine to iterate over the map and channels to capture the key value pair. The `Next()` function removes a tuple key, value from the channel.
+
+```golang
+m := map[string]int{"0":0, "1":1, "2":2, "3":3}
+it := iter.FromMapAsync(m, context.Background())
+fmt.Print("[ ")
+iter.ForEachIndex(it, func(index int, tup types.Tuple2[string, int]){
+    if index > 0{
+        fmt.Print(", ")
+    }    
+    k, v := tup.Deconstruct()
+    fmt.Print("'%s':%d", k, v)
+})
+fmt.Print(" ]")
+// prints : [ '0':0, '1':1, '2':2, '3':3 ]
+```
+
 
 # Count 
 
