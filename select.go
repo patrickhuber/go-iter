@@ -20,7 +20,7 @@ type transformIterator[TSource, TTarget any] struct {
 func (i *transformIterator[TSource, TTarget]) Next() types.Option[TTarget] {
 	switch op := i.iterator.Next().(type) {
 	case types.Some[TSource]:
-		return option.Some(i.transform(op.Value()))
+		return option.Some(i.transform(op.Value))
 	default:
 		return option.None[TTarget]()
 	}

@@ -31,7 +31,7 @@ func ToSlice[T any](iterator Iterator[T]) []T {
 	for {
 		switch op := iterator.Next().(type) {
 		case types.Some[T]:
-			slice = append(slice, op.Value())
+			slice = append(slice, op.Value)
 		case types.None[T]:
 			return slice
 		}

@@ -6,7 +6,7 @@ func ForEach[T any](iterator Iterator[T], action func(t T)) {
 	for {
 		switch op := iterator.Next().(type) {
 		case types.Some[T]:
-			action(op.Value())
+			action(op.Value)
 		case types.None[T]:
 			return
 		}
@@ -18,7 +18,7 @@ func ForEachIndex[T any](iterator Iterator[T], action func(i int, t T)) {
 	for {
 		switch op := iterator.Next().(type) {
 		case types.Some[T]:
-			action(index, op.Value())
+			action(index, op.Value)
 			index++
 		case types.None[T]:
 			return

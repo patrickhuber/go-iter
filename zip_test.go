@@ -13,11 +13,11 @@ func TestZip(t *testing.T) {
 		second := []string{"0", "2", "4", "6", "8"}
 		result := iter.Zip(iter.FromSlice(first), iter.FromSlice(second))
 		iter.ForEachIndex(result, func(index int, item types.Tuple2[int, string]) {
-			if first[index] != item.Value1() {
-				t.Fatalf("expected %d to equal %d", first[index], item.Value1())
+			if first[index] != item.Value1 {
+				t.Fatalf("expected %d to equal %d", first[index], item.Value1)
 			}
-			if second[index] != item.Value2() {
-				t.Fatalf("expected %s to equal %s", second[index], item.Value2())
+			if second[index] != item.Value2 {
+				t.Fatalf("expected %s to equal %s", second[index], item.Value2)
 			}
 		})
 	})

@@ -57,7 +57,7 @@ func (mi *mapIterator[TKey, TValue]) Next() types.Option[types.Tuple2[TKey, TVal
 	for {
 		switch next := mi.keys.Next().(type) {
 		case types.Some[TKey]:
-			k := next.Value()
+			k := next.Value
 			v, ok := mi.m[k]
 			if !ok {
 				continue
