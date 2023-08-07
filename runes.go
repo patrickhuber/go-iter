@@ -1,27 +1,29 @@
 package iter
 
-import "context"
+import (
+	"unicode/utf8"
 
-func Runes(str string, options ...ChannelOption[rune]) Iterator[rune] {
+	types "github.com/patrickhuber/go-types"
+	"github.com/patrickhuber/go-types/option"
+)
 
-	co := &channelOption[rune]{}
-	for _, option := range options {
-		option(co)
+type runeIterator struct {
+	str      string
+	position int
+}
+
+func (i *runeIterator) Next() types.Option[rune] {
+	if i.position >= len(i.str) {
+		return option.None[rune]()
 	}
-	if co.cx == nil {
-		co.cx = context.Background()
-	}
+	v, width := utf8.DecodeRuneInString(i.str[i.position:])
+	i.position += width
+	return option.Some(v)
+}
 
-	ch := make(chan rune)
-	go func(ch chan rune, cx context.Context) {
-		defer close(ch)
-		for _, r := range str {
-			select {
-			case ch <- r:
-			case <-cx.Done():
-				return
-			}
-		}
-	}(ch, co.cx)
-	return FromChannel(ch, options...)
+func Runes(str string) Iterator[rune] {
+	return &runeIterator{
+		str:      str,
+		position: 0,
+	}
 }
