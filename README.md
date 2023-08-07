@@ -88,6 +88,23 @@ iter.ForEachIndex(rng, func(index int, i int) {
 // 0 1 2 3 4 5 6 7 8 9
 ```
 
+# [RangeWith](range.go)
+
+The RangeWith function creates an iterator over the range `begin..end`. The includeBegin and includeEnd flags
+control if the range is inclusive start and inclusive end.
+
+```golang
+rng := iter.RangeWith(false, 0, 10, true)
+iter.ForEachIndex(rng, func(index int, i int) {
+    if index > 0 {
+        fmt.Print(" ")
+    }
+    fmt.Print(i)
+})
+// prints:
+// 1 2 3 4 5 6 7 8 9 10
+```
+
 # [Repeat](repeat.go)
 
 Repeat returns an iterator that repeats the given `element`, `count` times
@@ -232,4 +249,38 @@ it := iter.FromChannel(ch)
 iter.ForEach(it, func(i int) {
     fmt.Println(i)
 })
+```
+
+# [First](first.go)
+
+First returns the first item in the sequence. If the sequence has no more items, First returns types.None[T]
+
+```golang
+sequence := iter.Range(15, 30)
+first := iter.First(sequence)
+switch op := first.(type) {
+case types.Some[int]:
+    fmt.Println(op.Value)
+case types.None[int]:
+    fmt.Println("none")
+}
+// prints 
+// 15
+```
+
+# [FirstWhere](first.go)
+
+FirstWhere returns the first item in the sequence that matches the condition. If the sequence has no more items or no matches exist, First returns types.None[T]
+
+```golang
+sequence := iter.Range(15, 30)
+first := iter.FirstWhere(sequence, func(i int)bool{ return i % 10 == 0})
+switch op := first.(type) {
+case types.Some[int]:
+    fmt.Println(op.Value)
+case types.None[int]:
+    fmt.Println("none")
+}
+// prints
+// 20
 ```
