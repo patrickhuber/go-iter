@@ -1,6 +1,6 @@
 module github.com/patrickhuber/go-iter
 
-go 1.20
+go 1.18
 
 require (
 	github.com/patrickhuber/go-types v0.5.1
