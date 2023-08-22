@@ -143,7 +143,7 @@ The Where function removes items from an iterator using a predicate function.
 
 ```golang
 rng := iter.Range(0,10)
-even := func(i int){ return i % 2 }
+even := func(i int){ return i % 2 == 0}
 evens := iter.Where(rng, even)
 iter.ForEachIndex(evens, func(index int, i int){
     if index > 0{
